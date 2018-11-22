@@ -25,7 +25,7 @@ jobs:
 
       - run: echo "User ec2-user" >> $HOME/.ssh/config
       - run: echo "ForwardAgent yes" >> $HOME/.ssh/config
-      - run: yum -y install php-pear php-devel
+      - run: yum -y install php-pear php-devel curl
       - run: curl -LO https://deployer.org/releases/v3.0.11/deployer.phar
       - run: mv deployer.phar dep
       - run: chmod +x ./dep
