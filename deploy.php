@@ -3,7 +3,7 @@ namespace Deployer;
 
 require 'recipe/composer.php';
 // デプロイ先
-server('production', '13.112.171.83', 22)
+server('staging', '13.112.171.83', 22)
     ->user('ec2-user')
     ->identityFile()
     ->forwardAgent()
