@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: centos
+      - image: centos:7
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -25,7 +25,7 @@ jobs:
 
       - run: echo "User ec2-user" >> $HOME/.ssh/config
       - run: echo "ForwardAgent yes" >> $HOME/.ssh/config
-      - run: yum -y install php-pear php-devel
+      - run: yum -y install php php-pear php-devel
       - run: curl -LO https://deployer.org/releases/v3.0.11/deployer.phar
       - run: mv deployer.phar dep
       - run: chmod +x ./dep
