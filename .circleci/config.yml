@@ -23,9 +23,10 @@ jobs:
           fingerprints:
             - "2d:87:63:05:f2:99:a5:cb:ff:a7:c9:73:a7:43:8d:39"
 
-      - deploy:
-          name: Start master deploy
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-                rsync -av --delete --exclude='.git' --exclude='.circleci' ./ ${USER_NAME}@${HOST_NAME}:/var/www/html/
-            fi
+      - run: echo "User ec2-user" >> $HOME/.ssh/config
+      - run: echo "ForwardAgent yes" >> $HOME/.ssh/config
+      - run: yum -y install php-pear php-devel
+      - run: curl -LO https://deployer.org/deployer.phar
+      - run: mv deployer.phar dep
+      - run: chmod +x ./dep
+      - run: ./dep deploy staging
