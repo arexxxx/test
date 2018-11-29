@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: centos:7
+      - image: circleci/php:7.1-browsers
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -23,10 +23,13 @@ jobs:
           fingerprints:
             - "2d:87:63:05:f2:99:a5:cb:ff:a7:c9:73:a7:43:8d:39"
 
-      - run: echo "User ec2-user" >> $HOME/.ssh/config
-      - run: echo "ForwardAgent yes" >> $HOME/.ssh/config
-      - run: yum -y install php php-pear php-devel
-      - run: curl -LO https://deployer.org/releases/v3.0.11/deployer.phar
-      - run: mv deployer.phar dep
-      - run: chmod +x ./dep
-      - run: ./dep deploy staging
+      - run:
+          name: Start ssh-keyscan
+          command: |
+            ssh-keyscan ${HOST_NAME} >> ~/.ssh/known_hosts
+      - deploy:
+          name: Start master deploy
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+                rsync -av --delete ./ ${USER_NAME}@${HOST_NAME}:~/test/
+            fi
